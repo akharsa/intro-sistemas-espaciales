@@ -3,8 +3,8 @@ close all;
 clc;
 
 %% Simulation configuration
-% orbital parameters
 
+% orbital parameters
 apogee_km = 540;
 perigee_km = 540;
 inclination_deg = 97.62;
@@ -25,8 +25,8 @@ load coast
 [x,y,z] = sphere(100);
 
 % Load astronomical constants
-addpath('SGP4');
-constastro
+addpath('../vallado');
+run('constastro.m');
 
 % Orbital calculations
 semimajor_axis_km = ((re+apogee_km) + (re+perigee_km))/2;
@@ -42,18 +42,25 @@ r = zeros(3,length(t));
 v = zeros(3,length(t));
 acc = zeros(3,length(t));
 
+% Get initial r and v from Keplerian orbital parameters
 [r(:,1), v(:,1)] = coe2rv(p, e, deg2rad(inclination_deg), deg2rad(omega), deg2rad(argp),  deg2rad(nu), deg2rad(arglat), deg2rad(truelon), deg2rad(lonper));
 
 for i=2:length(t)
-  
-    [r(:,i), v(:,i)] = kepler(r(:,i-1), v(:,i-1), tstep_s);   
-    acc(:,i) = v(:,i) - v(:,i-1);
-    %[p, a, ecc, incl, omega, argp, nu, m, arglat, truelon, lonper ] = rv2coe (r(:,i), v(:,i));
-        
+    % Propagate
+    [r(:,i), v(:,i)] = kepler(r(:,i-1), v(:,i-1), tstep_s);      
+    % Calculate acceleration to be used in eci2ecef transformations
+    acc(:,i) = v(:,i) - v(:,i-1);           
 end
 
+% Get the ECEF r and v values
+% I choose to use a simplified version of ECItoECEF because the Vallado's
+% one is far more complex and it is not needed for this simulatrion.
+%
+% Take special care that every conversion from ECI to ECEF is made at
+% differents times
+
 jd = juliandate(today + t/(24*60*60));
-[r_ecef, v_ecef, a_ecef] = ECItoECEF(jd, r, v, a);
+[r_ecef, v_ecef, a_ecef] = ECItoECEF(jd, r, v, a); 
 
 
 %% Solid earth plot
@@ -105,6 +112,8 @@ t = 0;
 for i=1:length(r(1,:))
     
     t = t  + tstep_s;
+    % Shift all the earth coast points by the elapsed time assuming a
+    % simple time and rotation model
     p = lla2ecef([lat, long + 360/(24*60*60)*t,zeros(1,length(lat))'])/1000;
 
     delete(hnd);    
