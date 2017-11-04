@@ -1,3 +1,4 @@
+
 clear all;
 close all;
 clc;
@@ -12,23 +13,40 @@ run('constastro.m');
 % Only vertical speed launch
 %r0 = [0, re+1000, 0];
 %v0 = [0,8,0];
+%tstep_s = 100;
+%sim_length_s = 97*60*10*2;
 
 % Newton's cannon (increase the initial velocity to see the diference)
 %r0 = [0, re+4000, 0];
 %v0 = [3,0,0];
+%tstep_s = 50;
+%sim_length_s = 97*60*10*2;
 
 % Perfect Circular orbit
 r0 = [0, re+500, 0];
 v0 = [sqrt(mu/(re+500)),0,0];
+tstep_s = 50;
+sim_length_s = 97*60*10*2;
 
 % Inclined elliptical orbit
 %r0 = [0, re+1000, 0];
 %v0 = [4,0,8];
+%tstep_s = 100;
+%sim_length_s = 97*60*10*2;
 
-%%
-% Simulation config
-tstep_s = 100;
-sim_length_s = 97*60*10;
+% Polar circular orbit
+%r0 = [re+800, 0, 0];
+%v0 = [0,0,sqrt(mu/(re+500))];
+%tstep_s = 50;
+%sim_length_s = 97*60*10*2;
+
+% Escape velocity
+%r0 = [0, re+500, 0];
+%v0 = [sqrt(mu/(re+500))*sqrt(2),0,0];
+%tstep_s = 1000;
+%sim_length_s = 97*60*10*6;
+
+
 
 %% Auxiliary variables initialization
 [x,y,z] = sphere(100);
