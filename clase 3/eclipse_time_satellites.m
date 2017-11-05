@@ -7,12 +7,11 @@ addpath('../vallado');
 run('constastro.m');
 
 %% Orbit definition
-h = 500.0;
-inc = 45.0;
+h =500.0;
+inc = 97.4;
 e = 0.000;
-omega = 0.0;
+omega = 140.0;
 t0 = datenum('28 Aug 2016 15:00:00.000 UTCG');
-
 
 %% Other parameters
 j2 = 1082.62E-6;
@@ -24,7 +23,6 @@ p = 2*pi*sqrt(a^3/mu); % period
 %%
 omega = deg2rad(omega);
 delta_omega = -3/2*j2*(re/(a*(1-e^2)))^2*sqrt(mu/(a^3))*cos(deg2rad(inc)); % rad_sec
-
 
 beta = zeros(1,365);
 eclipse = zeros(1,365);
@@ -43,9 +41,6 @@ for t = 0:1:365-1;
 end
 
 %%
-figure
-plot(rad2deg(beta))
-
 height = 0.4;
 width = 0.5;
 figure('units','normalized','position',[width/2 height/2  width height]);
