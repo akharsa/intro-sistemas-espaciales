@@ -21,5 +21,5 @@ Vfinal = sqrt(2*mu/rperi-mu/afinal);
 deltaV = Vfinal - Vinicial;
 
 fprintf('Initial orbit velocity: %f km/s\n',Vinicial);
-fprintf('Initial orbit velocity: %f km/s\n',Vfinal);
+fprintf('Final orbit velocity at perigee: %f km/s\n',Vfinal);
 fprintf('Delta V requiered: %f km/s\n', deltaV);
